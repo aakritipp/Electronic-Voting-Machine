@@ -1,0 +1,95 @@
+#include &lt;mega16.h&gt;
+#include &lt;delay.h&gt;
+#include &lt;stdlib.h&gt;
+// Alphanumeric LCD Module functions
+#asm
+   .equ __lcd_port=0x15 ;PORTC
+#endasm
+#include &lt;lcd.h&gt;
+// Declaration of global variables
+int i,j,k; 
+char a[10], b[10], c[10];
+void main(void)
+{
+    // Port A initialization    
+    PORTA=0x00;
+    DDRA=0x00;
+    // Port C initialization
+    PORTC=0x00;
+    DDRC=0x00;
+    
+     i=j=k=0;
+    
+    // LCD module initialization
+    lcd_init(16);
+    while (1)
+    {
+      //your code
+        lcd_gotoxy(0,0);
+        lcd_putsf(&quot;ENTER YOUR VOTE&quot;);
+        lcd_gotoxy(0,1);
+        lcd_putsf(&quot;1&gt;BJP 2&gt;JP 3&gt;BSP&quot;);
+        if(PINA.0==1)
+        {
+            i=i+1;
+            delay_ms(100);
+            lcd_clear();
+            lcd_putsf(&quot;vote accepted&quot;);
+            delay_ms(100);
+            lcd_clear();
+            lcd_gotoxy(0,0);
+        }
+        if(PINA.1==1)
+        {
+            j=j+1;
+            lcd_clear();
+            delay_ms(100);
+            lcd_putsf(&quot;vote accepted&quot;);
+
+            delay_ms(100);
+            lcd_clear();
+            lcd_gotoxy(0,0);
+        }
+        if(PINA.2==1)
+        {
+            k=k+1;
+            lcd_clear();
+            delay_ms(100);
+            lcd_putsf(&quot;vote accepted&quot;);
+            delay_ms(100);
+            lcd_clear();
+            lcd_gotoxy(0,0);
+        }
+        if(PINA.3==1)
+        {
+            if(i&gt;j)
+            {
+                if(i&gt;k)
+                {
+                    lcd_clear();
+                    itoa(i,a);
+                    lcd_putsf(&quot;winner is BJP=&quot;);
+                    lcd_puts(a);
+                    delay_ms(500);
+                }
+            }
+            else if(j&gt;k)
+            {
+                lcd_clear();
+                itoa(j,b);
+                lcd_putsf(&quot;winner is JP=&quot;);
+                lcd_puts(b);
+                delay_ms(500);
+            }
+            else
+            {
+                lcd_clear();
+                itoa(k,c);
+                lcd_putsf(&quot;winner is BSP=&quot;);
+                lcd_puts(c);
+                delay_ms(500);
+            }
+        }
+    }    
+      
+}
